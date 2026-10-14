@@ -4,6 +4,78 @@ Campus Hub là dự án nền cho Mini Project Session 13. Ứng dụng cung c�
 
 Dự án được giữ ở mức nhỏ để dễ đọc và sửa đổi, nhưng đã có đủ luồng giao diện, API, xác thực, migration và kiểm thử.
 
+---
+
+## 👤 Thông tin sinh viên
+
+| Thông tin | Nội dung |
+|---|---|
+| **Họ tên** | Ngô Trung Chiến |
+| **Mã sinh viên** | PTIT-HN-040 |
+
+---
+
+## 🐳 Chạy hệ thống bằng Docker Compose
+
+### Yêu cầu
+- Docker Engine hoặc Docker Desktop đang chạy
+
+### Lệnh chạy hệ thống
+
+```bash
+# Bước 1: Chạy test backend
+cd backend
+./gradlew test
+
+# Bước 2: Build Docker Image cho backend
+cd ..
+docker build -t campus-hub-backend ./backend
+
+# Bước 3: Khởi động toàn bộ hệ thống
+docker compose up -d
+
+# Kiểm tra trạng thái các service
+docker compose ps
+
+# Kiểm tra health endpoint
+curl http://localhost:8080/actuator/health
+```
+
+### Dừng hệ thống
+
+```bash
+docker compose down
+# Để xóa cả volume (dữ liệu MySQL):
+docker compose down -v
+```
+
+---
+
+## 🌐 Cổng và URL kiểm tra
+
+| Service | URL | Ghi chú |
+|---|---|---|
+| Backend API | `http://localhost:8080` | Spring Boot |
+| Health Check | `http://localhost:8080/actuator/health` | Trả về `UP` khi sẵn sàng |
+
+---
+
+## 📸 Minh chứng kết quả
+
+### 1. Docker Image đã build thành công
+
+![Docker Image build thành công](docs/images/docker-build.jpg)
+
+### 2. Trạng thái các service sau khi chạy Compose
+
+![Docker Compose services running](docs/images/compose-ps.jpg)
+
+### 3. Kết quả gọi /actuator/health
+
+![Health endpoint UP](docs/images/health-check.jpg)
+
+---
+
 ## Chức năng có sẵn
 
 - Xem, tìm kiếm và lọc bài đăng.
@@ -37,7 +109,7 @@ MySQL
 
 Backend gồm năm bảng chính: `users`, `categories`, `posts`, `comments` và `reactions`. Frontend không sử dụng thư viện giao diện hay thư viện quản lý trạng thái để sinh viên dễ đọc mã nguồn.
 
-## Chạy khi phát triển
+## Chạy khi phát triển (không dùng Docker)
 
 Tạo database MySQL tên `campus_hub`, sau đó đặt các biến môi trường nếu thông tin kết nối khác giá trị mặc định:
 
@@ -97,5 +169,3 @@ npm run build
 ## Phạm vi cố ý để mở
 
 Dự án nền chưa có tải tệp, thông báo thời gian thực, email, phân trang trên giao diện, lịch sử thay đổi, dashboard và quy trình kiểm duyệt hoàn chỉnh. Nhóm có thể phát triển các hướng này, sửa sâu dự án nền hoặc thay thế toàn bộ công nghệ nếu phù hợp với ý tưởng của mình.
-
-Dự án không cung cấp sẵn Dockerfile, Docker Compose, cấu hình web server hoặc quy trình CI/CD. Phân tích hệ thống và lựa chọn toàn bộ phương án xây dựng, đóng gói, triển khai là công việc của từng nhóm trong Mini Project.
